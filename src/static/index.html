@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>devsmtpd</title>
+		<link rel="stylesheet" href="./assets/style.css">
+		<script src="./assets/main.js"></script>
+	</head>
+	<body>
+		<header>
+			<h1 title="1.0.0">devsmtpd</h1>
+			<div>
+				<button class="reload" type="button" onclick="load()">&#x27F3;</button>
+			</div>
+		</header>
+		<br />
+		<div id="container">
+		</div>
+		<script type="text/javascript">
+			function main() {
+				load();
+			}
+
+			if (document.addEventListener) document.addEventListener('DOMContentLoaded', main, false);
+			else if (document.attachEvent) document.attachEvent('onreadystatechange', main);
+			else window.onload = main;
+		</script>
+	</body>
+</html>

@@ -1,0 +1,51 @@
+body {
+	font-family: sans-serif;
+}
+
+h1 {
+	font-family: monospace;
+}
+
+button.reload {
+	width: 32px;
+	height: 32px;
+	font-size: 24px;
+}
+
+table {
+	width: 100%;
+	border: 1px solid #ccc;
+	padding: 0.5em;
+	margin-bottom: 32px;
+}
+
+tr {
+}
+
+td {
+	vertical-align: top;
+}
+
+td.key {
+	width: 100px;
+	text-align: right;
+	font-weight: bold;
+	color: green;
+}
+
+td.key::after {
+	content: ":";
+}
+
+td.key.header {
+	color: rgb(7, 57, 59);
+}
+
+td.value.header {
+	color: rgb(62, 62, 62);
+}
+
+pre {
+	margin-top: 2px;
+	white-space: pre-wrap;
+}
