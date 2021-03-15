@@ -32,3 +32,13 @@ devsmtpd:
 ```
 
 The above example only proxies the HTTP port to host and assumes the services using the SMTP would be inside the docker network.
+
+
+## Usage behind nginx reverse proxy
+
+```nginx
+# the trailing slashes are required if you host it on a path other than the root
+location /mails/ {
+	proxy_pass http://devsmtpd:3000/;
+}
+```
