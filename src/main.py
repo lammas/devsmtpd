@@ -46,7 +46,7 @@ app = Sanic(__name__)
 
 class SMTPHandler:
 	async def handle_DATA(self, server, session, envelope):
-		app.db.add(envelope)
+		app.ctx.db.add(envelope)
 		return '250 Message accepted for delivery'
 
 
@@ -58,9 +58,10 @@ def main():
 	parser.add_argument('--accesslog', help='Enable access log', action='store_true')
 	args = parser.parse_args()
 
-	app.db = MessageStore()
-	app.static('/assets', './src/static/assets')
+	app.ctx.db = MessageStore()
 	app.static('/', './src/static/index.html', content_type="text/html; charset=utf-8")
+	app.static('/assets/style.css', './src/static/assets/style.css')
+	app.static('/assets/main.js', './src/static/assets/main.js')
 	app.blueprint(api, url_prefix='/api')
 
 	controller = Controller(

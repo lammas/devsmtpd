@@ -6,5 +6,5 @@ blueprint = Blueprint('api')
 
 @blueprint.route('/messages')
 async def get_emails(request):
-	messages = list(reversed(request.app.db.messages))
+	messages = list(reversed(request.app.ctx.db.messages))
 	return json(dict(messages=messages))
