@@ -13,13 +13,21 @@ class MessageStore(object):
 
 	def add(self, envelope):
 		parsed = email.message_from_bytes(envelope.content)
+		message = list()
+		if parsed.is_multipart():
+			for msg in parsed.get_payload():
+				message.append(dict(filename=msg.get_filename(), data=msg.get_payload()))
+		else:
+			message.append(dict(filename=None, data=parsed.get_payload()))
+
 		message = {
 			'timestamp': datetime.datetime.now().isoformat(),
 			'from': envelope.mail_from,
 			'to': envelope.rcpt_tos,
 			'raw': envelope.content.decode('utf8', errors='replace'),
 			'headers': dict(parsed.items()),
-			'message': parsed.get_payload(),
+			'multipart': parsed.is_multipart(),
+			'message': message,
 		}
 		self.messages.append(message)
 		self.log_envelope(envelope)

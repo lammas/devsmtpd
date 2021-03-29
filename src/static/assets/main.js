@@ -54,10 +54,19 @@ function addMessage(container, msg) {
 		appendItem(msgElement, name, msg.headers[name], 'header');
 	}
 
-	var content = document.createElement('pre');
-	content.textContent = msg.message;
-	appendElement(msgElement, 'Message', content);
-	container.appendChild(msgElement);
+	for (var i = 0; i < msg.message.length; ++i) {
+		var content = document.createElement('pre');
+		if (msg.message[i].filename) {
+			content.textContent = 'Filename: ' + msg.message[i].filename + '\n\n' + msg.message[i].data;
+			appendElement(msgElement, 'Attachment', content);
+		}
+		else {
+			content.textContent = msg.message[i].data;
+			appendElement(msgElement, 'Message', content);
+		}
+		container.appendChild(msgElement);
+	}
+
 }
 
 function load() {

@@ -1,4 +1,4 @@
-FROM python:3.8-buster
+FROM python:3.8-slim
 
 ENV BIND_ADDRESS=0.0.0.0
 ENV HTTP_PORT=3000
