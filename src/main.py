@@ -7,6 +7,18 @@ from sanic.log import logger
 from api import blueprint as api
 
 
+def unnest_multipart(messages, msg):
+	if not msg:
+		return
+
+	if not msg.is_multipart():
+		messages.append(dict(filename=msg.get_filename(), data=msg.get_payload()))
+		return
+
+	for sub in msg.get_payload():
+		unnest_multipart(messages, sub)
+
+
 class MessageStore(object):
 	def __init__(self):
 		self.messages = list()
@@ -15,8 +27,7 @@ class MessageStore(object):
 		parsed = email.message_from_bytes(envelope.content)
 		message = list()
 		if parsed.is_multipart():
-			for msg in parsed.get_payload():
-				message.append(dict(filename=msg.get_filename(), data=msg.get_payload()))
+			unnest_multipart(message, parsed)
 		else:
 			message.append(dict(filename=None, data=parsed.get_payload()))
 
