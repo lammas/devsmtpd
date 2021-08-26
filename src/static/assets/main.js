@@ -40,6 +40,28 @@ function appendElement(container, key, element, className) {
 	container.appendChild(row);
 }
 
+function canDecodeAsBase64(data) {
+	try {
+		return !!atob(data);
+	}
+	catch (_err) {}
+	return false;
+}
+
+function addDecodeBase64(div, display, data) {
+	var decode = document.createElement('a');
+	decode.href = '#';
+	decode.textContent = 'decode base64';
+	decode.onclick = function() {
+		try {
+			display.textContent = atob(data);
+			decode.style.display = 'none';
+		} catch (_err) {}
+		return false;
+	};
+	div.appendChild(decode);
+}
+
 function addMessage(container, msg) {
 	var msgElement = document.createElement('table');
 
@@ -55,35 +77,23 @@ function addMessage(container, msg) {
 	}
 
 	for (var i = 0; i < msg.message.length; ++i) {
+		var div = document.createElement('div');
 		var content = document.createElement('pre');
+		div.appendChild(content);
+
 		if (msg.message[i].filename) {
 			content.textContent = 'Filename: ' + msg.message[i].filename + '\n\n' + msg.message[i].data;
-			appendElement(msgElement, 'Attachment', content);
+			appendElement(msgElement, 'Attachment', div);
 		}
 		else {
-			var div = document.createElement('div');
-			div.appendChild(content);
-
-			var canDecode = false;
-			try {
-					atob(msg.message[i].data);
-					canDecode = true;
-			} catch (_err) {}
-
-			if (canDecode) {
-					var decode = document.createElement('a');
-					decode.href = '#';
-					decode.textContent = 'Decode as Base64';
-					decode.onclick = function() {
-							content.textContent = atob(content.textContent);
-							decode.style.display = 'none';
-							return false;
-					};
-					div.appendChild(decode);
-			}
 			content.textContent = msg.message[i].data;
 			appendElement(msgElement, 'Message', div);
 		}
+
+		if (canDecodeAsBase64(msg.message[i].data)) {
+			addDecodeBase64(div, content, msg.message[i].data);
+		}
+
 		container.appendChild(msgElement);
 	}
 
