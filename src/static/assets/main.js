@@ -61,8 +61,28 @@ function addMessage(container, msg) {
 			appendElement(msgElement, 'Attachment', content);
 		}
 		else {
+			var div = document.createElement('div');
+			div.appendChild(content);
+
+			var canDecode = false;
+			try {
+					atob(msg.message[i].data);
+					canDecode = true;
+			} catch (_err) {}
+
+			if (canDecode) {
+					var decode = document.createElement('a');
+					decode.href = '#';
+					decode.textContent = 'Decode as Base64';
+					decode.onclick = function() {
+							content.textContent = atob(content.textContent);
+							decode.style.display = 'none';
+							return false;
+					};
+					div.appendChild(decode);
+			}
 			content.textContent = msg.message[i].data;
-			appendElement(msgElement, 'Message', content);
+			appendElement(msgElement, 'Message', div);
 		}
 		container.appendChild(msgElement);
 	}
